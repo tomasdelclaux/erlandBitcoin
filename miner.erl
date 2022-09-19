@@ -3,7 +3,6 @@
 -module(miner).
 -author("Tomas Delclaux").
 -compile(export_all).
--define(Gator, {Tomas: "tomas.delclauxro").
 
 % io_lib:format("~64.16.0b", [binary:decode_unsigned(crypto:hash(sha256,
 %  "COP5615 is a boring class"))]).
@@ -17,11 +16,11 @@ prefix(_, _) -> false.
 find_hash(true, [String]) -> io:format("mined string: ~s~n", [String]).
 find_hash(Num) ->  
     ZeroString = lists:duplicate(Num, "0"),
-    RString = base64:encode(crypto:strong_rand_bytes(8)),
+    RString = "tomas.delclauxro;" ++ base64:encode(crypto:strong_rand_bytes(8)),
     Res=prefix(lists:flatten(ZeroString)    
                 ,io_lib:format("~64.16.0b", [binary:decode_unsigned(crypto:hash(sha256,RString))])),
     case Res of
-        true -> io:format("FOUND~n"),find_hash(true, [RString]);
+        true -> io:format("FOUND: ~s~n", [io_lib:format("~64.16.0b", [binary:decode_unsigned(crypto:hash(sha256,RString))])]),find_hash(true, [RString]);
         false -> io:format("NOT FOUND~n"),find_hash(Num)
     end.
 
