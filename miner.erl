@@ -14,17 +14,17 @@ prefix([Ch | Rest1], [Ch | Rest2]) ->
 prefix(_, _) -> false.
 
 
-find_hash(true, [Num]) -> io:format("hash found = ~w~n", [Num]).
+find_hash(true, [String]) -> io:format("mined string: ~s~n", [String]).
 find_hash(Num) ->  
     ZeroString = lists:duplicate(Num, "0"),
-        lists:flatten(ZeroString),
     RString = base64:encode(crypto:strong_rand_bytes(8)),
-    Res=prefix("0",io_lib:format("~64.16.0b", [binary:decode_unsigned(crypto:hash(sha256,RString))])),
+    Res=prefix(lists:flatten(ZeroString)    
+                ,io_lib:format("~64.16.0b", [binary:decode_unsigned(crypto:hash(sha256,RString))])),
     case Res of
-        true -> io:format("FOUND~n"),find_hash(true, [Num]);
-        false -> io:format("NOT FOUND"),find_hash(Num)
+        true -> io:format("FOUND~n"),find_hash(true, [RString]);
+        false -> io:format("NOT FOUND~n"),find_hash(Num)
     end.
 
-run() ->
+lets_go() ->
     {ok,[Num]} = io:fread("Enter Number of Zeroes:", "~d"),
     find_hash(Num).
