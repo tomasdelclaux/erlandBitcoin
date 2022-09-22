@@ -21,4 +21,3 @@ On machine number 2 (names and ip addresses need to be adjusted accordingly)
 ```
 echo "192.168.64.1 hostname1.com" >> /etc/hosts
 erl -name node@hostname2.com```
-```
