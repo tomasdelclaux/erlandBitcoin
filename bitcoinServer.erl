@@ -16,6 +16,7 @@
 start() ->
     % SupFlags = {one_for_one, 10, 3600},
     % ChildSpec = {bitcoinWorker, {bitcoinWorker, start_link, [mine]}, temporary, 1000, worker, [bitcoinWorker]},
+    % erlang:set_cookie(?MODULE,?COOKIE),
     case gen_tcp:listen(?TCP_PORT,[{active, once},{packet,2}]) of
         {ok, LSock} ->
             start_servers(?NUM_THREADS_SERVERS,LSock),

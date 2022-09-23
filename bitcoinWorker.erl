@@ -2,6 +2,7 @@
 -behaviour(gen_server).
 -compile(export_all).
 -define(GATOR, "tomas.delclauxro;").
+-define(COOKIE, froggy).
 
 find_hash(Num) ->  
     ZeroString = lists:duplicate(Num, "0"),
@@ -21,6 +22,7 @@ main() ->
 
 
 client(PortNo) ->
+    % erlang:set_cookie(?MODULE,?COOKIE),
     {ok,Sock} = gen_tcp:connect("localhost",PortNo,[{active,false},
                                                     {packet,2}]),
     gen_tcp:send(Sock, "READY " ++ pid_to_list(self())),
