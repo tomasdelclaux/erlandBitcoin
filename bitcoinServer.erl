@@ -7,17 +7,18 @@
 -define(TCP_PORT, 4500).
 -define(NUM_THREADS_SERVERS, 2).
 -define(GATOR, "tomas.delclauxro;").
-
+-define(COOKIE, froggy).
+-define(NUMZEROES, 5).
 
 % start_link() ->
 %   supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
-start(NumZeros) ->
+start() ->
     % SupFlags = {one_for_one, 10, 3600},
     % ChildSpec = {bitcoinWorker, {bitcoinWorker, start_link, [mine]}, temporary, 1000, worker, [bitcoinWorker]},
     case gen_tcp:listen(?TCP_PORT,[{active, once},{packet,2}]) of
         {ok, LSock} ->
-            start_servers(NumZeros,?NUM_THREADS_SERVERS,LSock),
+            start_servers(?NUM_THREADS_SERVERS,LSock),
             {ok, Port} = inet:port(LSock),
             Port;
         {error,Reason} ->
@@ -26,20 +27,21 @@ start(NumZeros) ->
     end.
     % {ok, {SupFlags, [ChildSpec]}}.
 
-start_servers(NumZeros,0,_) ->
+start_servers(0,_) ->
+    Pid = spawn(?MODULE, super_find_hash, [?NUMZEROES]),
+    register(list_to_atom("bitcoin_server_miner"), Pid),    
     ok;
-start_servers(NumZeros,Num,LS) ->
-    spawn(?MODULE,server,[NumZeros,LS]),
-    start_servers(NumZeros,Num-1,LS).
 
-server(NumZeros,LS) ->
-    super_find_hash(NumZeros),
-    case gen_tcp:accept(LS, 1) of
+start_servers(Num,LS) ->
+    Pid=spawn(?MODULE,server,[LS]),
+    register(list_to_atom("bitcoin_server_tcp_"++integer_to_list(Num)), Pid),
+    start_servers(Num-1,LS).
+
+server(LS) ->
+    case gen_tcp:accept(LS) of
         {ok,S} ->
-            loop(NumZeros,S),
-            server(NumZeros,LS);
-        {error, timeout} -> 
-            server(NumZeros,LS);
+            loop(S),
+            server(LS);
         Other ->
             io:format("accept returned ~w - goodbye!~n",[Other]),
             ok
@@ -52,24 +54,25 @@ super_find_hash(NumZeros) ->
     HashedString = io_lib:format("~64.16.0b", [Hashed]),
     Test = string:prefix(HashedString, ZeroString),
     case Test of
-        nomatch -> [];
-        _ -> io:format("SERVER: ~s\n", [RString ++ "\t" ++ HashedString])
+        nomatch -> super_find_hash(NumZeros);
+        _ -> io:format("SERVER: ~s\n", [RString ++ "\t" ++ HashedString]),
+        super_find_hash(NumZeros)
     end.
 
-loop(NumZeros,S) ->
+loop(S) ->
     inet:setopts(S,[{active,once}]),
     receive
         {tcp,S,Message} ->
-            %io:format("new client ~s~n", [Message]),
+            % io:format("new client ~s~n", [Message]),
             case Message of
                 "READY " ++ PID -> 
                     ChildPid = list_to_pid(PID),
-                    gen_tcp:send(S, "GO " ++ integer_to_list(NumZeros));
+                    gen_tcp:send(S, "GO " ++ integer_to_list(5));
                 "NEW COIN " ++ HASH ->
                     io:format("WORKER: ~s\n", [HASH]),
-                    gen_tcp:send(S, "GO " ++ integer_to_list(NumZeros))
+                    gen_tcp:send(S, "GO " ++ integer_to_list(5))
             end,
-            loop(NumZeros,S);
+            loop(S);
         {tcp_closed,S} ->
             io:format("Socket ~w closed [~w]~n",[S,self()]),
             ok
