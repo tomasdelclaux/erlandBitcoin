@@ -91,6 +91,10 @@ Cpu time=193195000 microseconds
 Elapsed time=147463000 microseconds
 ** exception exit: killed
 ``` 
-### LARGEST COIN FOUND - TODO
+### LARGEST COIN FOUND - 
+7 Zeros
+```
+tomas.delclauxro;GvSJdEEvPl37E5Rwiv8bHrF0nI/r/EJj      000000063a9e9a68100adc9980abf79f2dd331a2ea2de855f9b28cd0c6989234
+```
 
 ### LARGEST NUMBER OF WORKING MACHINES
