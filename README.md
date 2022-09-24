@@ -79,7 +79,9 @@ To stop the server run:
 ## ACTOR MODEL
 
 ###SIZE OF WORK UNIT - TODO
+
 ###RESULT OF RUNNING FOR INPUT 4 - TODO
+
 ###CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM - TODO
 ```
 (node@hostname1.com)3> bitcoinServer:stop().
@@ -88,4 +90,5 @@ Elapsed time=147463000 microseconds
 ** exception exit: killed
 ``` 
 ### LARGEST COIN FOUND - TODO
+
 ### LARGEST NUMBER OF WORKING MACHINES
