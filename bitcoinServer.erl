@@ -1,22 +1,20 @@
 -module(bitcoinServer).
 -author("Tomas Delclaux Rodriguez Rey and Ariel Weitzenfeld").
-% -behaviour(supervisor).
-% -export([start_link/0, start_socket/0]).
-% -export([init/1]).
 -compile(export_all).
 -define(TCP_PORT, 4500).
--define(NUM_THREADS_SERVERS, 2).
+-define(NUM_THREADS_SERVERS, 8).
 -define(GATOR, "tomas.delclauxro;").
 -define(COOKIE, froggy).
 -define(NUMZEROES, 5).
-
-% start_link() ->
-%   supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+-define(DOS, true).
 
 start() ->
-    % SupFlags = {one_for_one, 10, 3600},
-    % ChildSpec = {bitcoinWorker, {bitcoinWorker, start_link, [mine]}, temporary, 1000, worker, [bitcoinWorker]},
-    % erlang:set_cookie(?MODULE,?COOKIE),
+    statistics(runtime),
+    statistics(wall_clock),
+    case ?DOS of
+        true ->erlang:set_cookie(?MODULE,?COOKIE);
+        false -> []
+    end,
     case gen_tcp:listen(?TCP_PORT,[{active, once},{packet,2}]) of
         {ok, LSock} ->
             start_servers(?NUM_THREADS_SERVERS,LSock),
@@ -26,16 +24,15 @@ start() ->
             io:format("error ~s", [Reason]),
             {error,Reason}
     end.
-    % {ok, {SupFlags, [ChildSpec]}}.
 
-start_servers(0,_) ->
-    Pid = spawn(?MODULE, super_find_hash, [?NUMZEROES]),
-    register(list_to_atom("bitcoin_server_miner"), Pid),    
+start_servers(0,_) ->    
     ok;
 
 start_servers(Num,LS) ->
-    Pid=spawn(?MODULE,server,[LS]),
-    register(list_to_atom("bitcoin_server_tcp_"++integer_to_list(Num)), Pid),
+    ServerPid=spawn_link(?MODULE,server,[LS]),
+    register(list_to_atom("bitcoin_server_tcp_"++integer_to_list(Num)), ServerPid),
+    WorkerPid = spawn_link(?MODULE, super_find_hash, [?NUMZEROES]),
+    register(list_to_atom("bitcoin_server_miner"++integer_to_list(Num)), WorkerPid),
     start_servers(Num-1,LS).
 
 server(LS) ->
@@ -56,7 +53,7 @@ super_find_hash(NumZeros) ->
     Test = string:prefix(HashedString, ZeroString),
     case Test of
         nomatch -> super_find_hash(NumZeros);
-        _ -> io:format("SERVER: ~s\n", [RString ++ "\t" ++ HashedString]),
+        _ -> io:format("SERVER:" ++ pid_to_list(self())++" ~s\n", [RString ++ "\t" ++ HashedString]),
         super_find_hash(NumZeros)
     end.
 
@@ -70,7 +67,7 @@ loop(S) ->
                     ChildPid = list_to_pid(PID),
                     gen_tcp:send(S, "GO " ++ integer_to_list(5));
                 "NEW COIN " ++ HASH ->
-                    io:format("WORKER: ~s\n", [HASH]),
+                    io:format("WORKER:~s\n", [HASH]),
                     gen_tcp:send(S, "GO " ++ integer_to_list(5))
             end,
             loop(S);
@@ -78,3 +75,12 @@ loop(S) ->
             io:format("Socket ~w closed [~w]~n",[S,self()]),
             ok
     end.
+
+stop()->
+    {_, Time1} = statistics(runtime),
+    {_, Time2} = statistics(wall_clock),
+    CPU = Time1 * 1000,
+    Elapsed = Time2 * 1000,
+    io:format("Cpu time=~p microseconds~n", [CPU]),
+    io:format("Elapsed time=~p microseconds~n", [Elapsed]),
+    exit(self(),kill).

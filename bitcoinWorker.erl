@@ -1,8 +1,10 @@
 -module(bitcoinWorker).
--behaviour(gen_server).
 -compile(export_all).
 -define(GATOR, "tomas.delclauxro;").
 -define(COOKIE, froggy).
+-define(TCP_PORT, 4500).
+-define(DOS, false).
+
 
 find_hash(Num) ->  
     ZeroString = lists:duplicate(Num, "0"),
@@ -15,15 +17,13 @@ find_hash(Num) ->
         _ -> [RString ++ "\t" ++ HashedString]
     end.
 
-main() ->
-    {ok,[Num]} = io:fread("", "~d"),
-    Res = find_hash(Num),
-    io:format("~s\n", Res).
 
-
-client(PortNo) ->
-    % erlang:set_cookie(?MODULE,?COOKIE),
-    {ok,Sock} = gen_tcp:connect("localhost",PortNo,[{active,false},
+client(Ip) ->
+    case ?DOS of
+        true ->erlang:set_cookie(?MODULE,?COOKIE);
+        false -> []
+    end,
+    {ok,Sock} = gen_tcp:connect(Ip,?TCP_PORT,[{active,false},
                                                     {packet,2}]),
     gen_tcp:send(Sock, "READY " ++ pid_to_list(self())),
     loop(Sock),
@@ -31,7 +31,17 @@ client(PortNo) ->
 
 loop(S) ->
     case gen_tcp:recv(S,0) of
-        {ok, "GO "++Num} -> Res = find_hash(list_to_integer(Num)), gen_tcp:send(S, "NEW COIN " ++ Res), loop(S);
+        {ok, "GO "++Num} -> Res = find_hash(list_to_integer(Num)), gen_tcp:send(S, "NEW COIN " ++ pid_to_list(self()) ++ " " ++ Res), loop(S);
         %{ok, "GO "++Num} -> io:format("mining with ~s zeroes~n", [Num]);
         {ok, "CHILL"} -> []
     end.
+
+example1()->
+    {ok,[Num]} = io:fread("", "~d"),
+    Res = find_hash(Num),
+    io:format("~s\n", Res).
+
+example2()->
+    {ok,[Ip]} = io:fread("", "~s"),
+    client(Ip).
+    
