@@ -1,5 +1,8 @@
-# erlandBitcoin
-Hashing in erland for bitcoins
+# erlangBitcoin
+Hashing in erlang for bitcoins
+
+# AUTHORS
+Ariel Weitzenfeld and Tomas Delclaux
 
 ## INTRODUCTION
 Distributed system for mining bitcoins in erlang.
