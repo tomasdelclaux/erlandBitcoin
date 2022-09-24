@@ -100,7 +100,7 @@ SERVER:<0.98.0> tomas.delclauxro;gnHPcRbqyV/7QXnErr3hFHHxzoqjC0iz       00003b50
 WORKER:<0.79.0> tomas.delclauxro;9MfgBFqgl+H0xpqcxKuwecteDrikB/zf       00002cc066f3cbebd2fc925bbc5d5726704769cc83e6e1689703f5efa1382054
 ```
 
-CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM - TODO
+CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM -
 ```
 (node@hostname1.com)3> bitcoinServer:stop().
 Cpu time=747802000 microseconds
