@@ -94,7 +94,6 @@ SERVER:<0.92.0> tomas.delclauxro;YP376HeK7t1KjZH6Dzmu036HfaF/GRCJ       0000fada
 SERVER:<0.95.0> tomas.delclauxro;9I+TH8M6YK3Ut7jCCb3QsfCAF85HenPp       00004b99561cb001b6267558f973e289990f15eea8420dc2ad96035eaa90c298
 SERVER:<0.98.0> tomas.delclauxro;gnHPcRbqyV/7QXnErr3hFHHxzoqjC0iz       00003b504095c50cb5cbc6744899a33d905424488db2ad68fa5213e05d8b76bc
 WORKER:<0.79.0> tomas.delclauxro;9MfgBFqgl+H0xpqcxKuwecteDrikB/zf       00002cc066f3cbebd2fc925bbc5d5726704769cc83e6e1689703f5efa1382054
-WORKER:<0.79.0> tomas.delclauxro;+NPGGOHjUSM3ql7evEwm3DdgRxHBSkIT  
 ```
 
 ###CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM - TODO
