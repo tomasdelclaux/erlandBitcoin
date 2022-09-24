@@ -40,7 +40,8 @@ erl -name node@hostname1.com
 On machine number 2 (names and ip addresses need to be adjusted accordingly)
 ```
 echo "192.168.64.1 hostname1.com" >> /etc/hosts
-erl -name node@hostname2.com```
+erl -name node@hostname2.com
+```
 
 On the bitcoinServer and the bitcoinWorker file, set the DOS flag to true
 ```-define(DOS, true).```
@@ -49,7 +50,8 @@ Then on the client machine run the client program and on the server machine run 
 
 Client side:
 ```(node@hostname2.com)2> bitcoinWorker:example2().
-192.168.64.1```
+192.168.64.1
+```
 
 Server Side:
 ```
@@ -76,14 +78,14 @@ To stop the server run:
 
 ## ACTOR MODEL
 
-    ###SIZE OF WORK UNIT - TODO
-    ###RESULT OF RUNNING FOR INPUT 4 - TODO
-    ###CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM - TODO
-    ```
+###SIZE OF WORK UNIT - TODO
+###RESULT OF RUNNING FOR INPUT 4 - TODO
+###CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM - TODO
+```
 (node@hostname1.com)3> bitcoinServer:stop().
 Cpu time=193195000 microseconds
 Elapsed time=147463000 microseconds
 ** exception exit: killed
-    ``` 
-    ### LARGEST COIN FOUND - TODO
-    ### LARGEST NUMBER OF WORKING MACHINES
+``` 
+### LARGEST COIN FOUND - TODO
+### LARGEST NUMBER OF WORKING MACHINES
