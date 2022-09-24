@@ -6,10 +6,10 @@
 -define(NUM_SERVER_WORKERS, 6).
 -define(GATOR, "tomas.delclauxro;").
 -define(COOKIE, froggy).
--define(NUMZEROES, 5).
 -define(DOS, false).
 
 start() ->
+    {ok,[NumZeroes]} = io:fread("", "~d"),
     statistics(runtime),
     statistics(wall_clock),
     case ?DOS of
@@ -18,8 +18,8 @@ start() ->
     end,
     case gen_tcp:listen(?TCP_PORT,[{active, once},{packet,2}]) of
         {ok, LSock} ->
-            start_servers(?NUM_THREADS_SERVERS,LSock),
-            start_server_workers(?NUM_SERVER_WORKERS),
+            start_servers(?NUM_THREADS_SERVERS,LSock, NumZeroes),
+            start_server_workers(?NUM_SERVER_WORKERS, NumZeroes),
             {ok, Port} = inet:port(LSock),
             Port;
         {error,Reason} ->
@@ -27,27 +27,27 @@ start() ->
             {error,Reason}
     end.
 
-start_servers(0,_) ->    
+start_servers(0, _, _) ->    
     ok;
 
-start_servers(Num,LS) ->
-    ServerPid=spawn_link(?MODULE,server,[LS]),
+start_servers(Num, LS, NumZeroes) ->
+    ServerPid=spawn_link(?MODULE,server,[LS, NumZeroes]),
     register(list_to_atom("bitcoin_server_tcp_"++integer_to_list(Num)), ServerPid),
-    start_servers(Num-1,LS).
+    start_servers(Num-1,LS, NumZeroes).
 
-start_server_workers(0) ->    
+start_server_workers(0, _) ->    
     ok;
 
-start_server_workers(Num) ->
-    WorkerPid = spawn_link(?MODULE, super_find_hash, [?NUMZEROES]),
+start_server_workers(Num, NumZeroes) ->
+    WorkerPid = spawn_link(?MODULE, super_find_hash, [NumZeroes]),
     register(list_to_atom("bitcoin_server_miner"++integer_to_list(Num)), WorkerPid),
-    start_server_workers(Num-1).
+    start_server_workers(Num-1, NumZeroes).
 
-server(LS) ->
+server(LS, NumZeroes) ->
     case gen_tcp:accept(LS) of
         {ok,S} ->
-            loop(S),
-            server(LS);
+            loop(S, NumZeroes),
+            server(LS, NumZeroes);
         Other ->
             io:format("accept returned ~w - goodbye!~n",[Other]),
             ok
@@ -65,7 +65,7 @@ super_find_hash(NumZeros) ->
         super_find_hash(NumZeros)
     end.
 
-loop(S) ->
+loop(S, NumZeroes) ->
     inet:setopts(S,[{active,once}]),
     receive
         {tcp,S,Message} ->
@@ -73,12 +73,12 @@ loop(S) ->
             case Message of
                 "READY " ++ PID -> 
                     ChildPid = list_to_pid(PID),
-                    gen_tcp:send(S, "GO " ++ integer_to_list(5));
+                    gen_tcp:send(S, "GO " ++ integer_to_list(NumZeroes));
                 "NEW COIN " ++ HASH ->
                     io:format("WORKER:~s\n", [HASH]),
-                    gen_tcp:send(S, "GO " ++ integer_to_list(5))
+                    gen_tcp:send(S, "GO " ++ integer_to_list(NumZeroes))
             end,
-            loop(S);
+            loop(S, NumZeroes);
         {tcp_closed,S} ->
             io:format("Socket ~w closed [~w]~n",[S,self()]),
             ok
