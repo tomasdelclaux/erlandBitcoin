@@ -80,7 +80,11 @@ To stop the server run:
 
 ## ACTOR MODEL
 
-SIZE OF WORK UNIT - TODO
+SIZE OF WORK UNIT -
+
+The optimal number of workers we decided is around ________. This is because ____________.
+
+Each worker gets the same size of work unit as each worker operates on a first come first serve basis. It requests work, looks for a coin, reports after finding one, and requests work again. The number of times a worker is able to run a problem is dependent on the scheduler and the randomness of successful operations.
 
 RESULT OF RUNNING FOR INPUT 4 -
 ```
@@ -99,10 +103,12 @@ WORKER:<0.79.0> tomas.delclauxro;9MfgBFqgl+H0xpqcxKuwecteDrikB/zf       00002cc0
 CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM - TODO
 ```
 (node@hostname1.com)3> bitcoinServer:stop().
-Cpu time=193195000 microseconds
-Elapsed time=147463000 microseconds
+Cpu time=747802000 microseconds
+Elapsed time=236173000 microseconds
 ** exception exit: killed
 ``` 
+CPU to Realtime Ratio ~= 3.16633146041
+
 ### LARGEST COIN FOUND - 
 7 Zeros
 ```
