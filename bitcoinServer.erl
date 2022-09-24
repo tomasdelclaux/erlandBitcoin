@@ -3,7 +3,7 @@
 -compile(export_all).
 -define(TCP_PORT, 4500).
 -define(NUM_THREADS_SERVERS, 2).
--define(NUM_SERVER_WORKERS, 6).
+-define(NUM_SERVER_WORKERS, 8).
 -define(GATOR, "tomas.delclauxro;").
 -define(COOKIE, froggy).
 -define(DOS, false).
