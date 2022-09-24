@@ -48,15 +48,16 @@ On the bitcoinServer and the bitcoinWorker file, set the DOS flag to true
 
 Then on the client machine run the client program and on the server machine run the server program.
 
-Client side:
+Client side (with an imput for the IP of the server):
 ```
 (node@hostname2.com)2> bitcoinWorker:example2().
 192.168.64.1
 ```
 
-Server Side:
+Server Side (with an input for a number of zeros):
 ```
 (node@hostname1.com)2> bitcoinServer:start().
+5
 4500
 SERVER:<0.100.0> tomas.delclauxro;SkByh631ZqwzrThMt+K3lH/Yq5A7XjFA      0000095e52ec7b3900bd7a107b63456136144d373e994ed60d25e4807ba552f7
 SERVER:<0.96.0> tomas.delclauxro;rKLcnpBGeIocCx7ADNW+7ToleAyAIk4n       0000085c15162f687a08d4ecab6fe8c44152a7b1888acf7ccd0239d253d96715
