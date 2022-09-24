@@ -2,11 +2,12 @@
 -author("Tomas Delclaux Rodriguez Rey and Ariel Weitzenfeld").
 -compile(export_all).
 -define(TCP_PORT, 4500).
--define(NUM_THREADS_SERVERS, 8).
+-define(NUM_THREADS_SERVERS, 2).
+-define(NUM_SERVER_WORKERS, 6).
 -define(GATOR, "tomas.delclauxro;").
 -define(COOKIE, froggy).
 -define(NUMZEROES, 5).
--define(DOS, true).
+-define(DOS, false).
 
 start() ->
     statistics(runtime),
@@ -18,6 +19,7 @@ start() ->
     case gen_tcp:listen(?TCP_PORT,[{active, once},{packet,2}]) of
         {ok, LSock} ->
             start_servers(?NUM_THREADS_SERVERS,LSock),
+            start_server_workers(?NUM_SERVER_WORKERS),
             {ok, Port} = inet:port(LSock),
             Port;
         {error,Reason} ->
@@ -31,9 +33,15 @@ start_servers(0,_) ->
 start_servers(Num,LS) ->
     ServerPid=spawn_link(?MODULE,server,[LS]),
     register(list_to_atom("bitcoin_server_tcp_"++integer_to_list(Num)), ServerPid),
+    start_servers(Num-1,LS).
+
+start_server_workers(0) ->    
+    ok;
+
+start_server_workers(Num) ->
     WorkerPid = spawn_link(?MODULE, super_find_hash, [?NUMZEROES]),
     register(list_to_atom("bitcoin_server_miner"++integer_to_list(Num)), WorkerPid),
-    start_servers(Num-1,LS).
+    start_server_workers(Num-1).
 
 server(LS) ->
     case gen_tcp:accept(LS) of
