@@ -141,3 +141,95 @@ We were, however, able to run the code with 4 connected clients, and the server 
 
 Without any clients connecting to the server, the maximum number of feasible actors to use to run bitcoin mining processes on the same machine as the 
 server was determined by the number of physical cores of the system. Both our systems had 8 high performance cores and 2 efficiency cores. Consequently, the maximum number of processes running in parallel could at max be 10. However, due to the erlang scheduler and the erlang vm, the code can run with much more actors. In fact, we tested running the code with up to 50 bitcoin mine workers on the server machine.
+
+```
+87> regs().
+SERVER:<0.495.0> tomas.delclauxro;leSlRt7rrOW9emt/2V9hG5vFvrxVOCvX      0000238b0275e4032fd54e9e671fa7a909c0afbd65a69d545333fb62f270042a
+
+** Registered procs on node nonode@nohost **
+Name                  Pid          Initial Call                      Reds Msgs
+application_controlle <0.44.0>     erlang:apply/2                     907    0
+bitcoin_server_miner1 <0.537.0>    bitcoinServer:super_find_     39016619    0
+bitcoin_server_miner1 <0.528.0>    bitcoinServer:super_find_     33059516    0
+bitcoin_server_miner1 <0.527.0>    bitcoinServer:super_find_     26602771    0
+bitcoin_server_miner1 <0.526.0>    bitcoinServer:super_find_     26596445    0
+bitcoin_server_miner1 <0.525.0>    bitcoinServer:super_find_     32032272    0
+bitcoin_server_miner1 <0.524.0>    bitcoinServer:super_find_     31644449    0
+bitcoin_server_miner1 <0.523.0>    bitcoinServer:super_find_     31632557    0
+bitcoin_server_miner1 <0.522.0>    bitcoinServer:super_find_     31609894    0
+SERVER:<0.516.0> tomas.delclauxro;xjeNJ1H9nwV0P9TuhC9DEMYP4VN9X7Vr      0000fe553f5abb283446dde5170f26ee643b698e0517c11fd88941670d19b9d6
+bitcoin_server_miner1 <0.521.0>    bitcoinServer:super_find_     31640482    0
+SERVER:<0.490.0> tomas.delclauxro;kepUu8zKxGz0O0eChgDPUFoyOx/Nac9I      00002441f313f18d41bef35999efb26f0c7a43857d3dc9d66818fa742cdc45e5
+bitcoin_server_miner1 <0.520.0>    bitcoinServer:super_find_     26910515    0
+bitcoin_server_miner1 <0.519.0>    bitcoinServer:super_find_     56726902    0
+bitcoin_server_miner2 <0.536.0>    bitcoinServer:super_find_     28251639    0
+bitcoin_server_miner2 <0.518.0>    bitcoinServer:super_find_     26725394    0
+bitcoin_server_miner2 <0.517.0>    bitcoinServer:super_find_     31879101    0
+bitcoin_server_miner2 <0.516.0>    bitcoinServer:super_find_     26966466    0
+bitcoin_server_miner2 <0.515.0>    bitcoinServer:super_find_     31668404    0
+bitcoin_server_miner2 <0.514.0>    bitcoinServer:super_find_     26730790    0
+bitcoin_server_miner2 <0.513.0>    bitcoinServer:super_find_     26946492    0
+bitcoin_server_miner2 <0.512.0>    bitcoinServer:super_find_     26951897    0
+bitcoin_server_miner2 <0.511.0>    bitcoinServer:super_find_     31679054    0
+bitcoin_server_miner2 <0.510.0>    bitcoinServer:super_find_     39206277    0
+bitcoin_server_miner2 <0.509.0>    bitcoinServer:super_find_     26962434    0
+bitcoin_server_miner3 <0.535.0>    bitcoinServer:super_find_     26682990    0
+bitcoin_server_miner3 <0.508.0>    bitcoinServer:super_find_     26990879    0
+bitcoin_server_miner3 <0.507.0>    bitcoinServer:super_find_     32275181    0
+bitcoin_server_miner3 <0.506.0>    bitcoinServer:super_find_     39213866    0
+bitcoin_server_miner3 <0.505.0>    bitcoinServer:super_find_     32646997    0
+bitcoin_server_miner3 <0.504.0>    bitcoinServer:super_find_     36510930    0
+bitcoin_server_miner3 <0.503.0>    bitcoinServer:super_find_     32937861    0
+bitcoin_server_miner3 <0.502.0>    bitcoinServer:super_find_     39146402    0
+bitcoin_server_miner3 <0.501.0>    bitcoinServer:super_find_     42797202    0
+bitcoin_server_miner3 <0.500.0>    bitcoinServer:super_find_     27028133    0
+bitcoin_server_miner3 <0.499.0>    bitcoinServer:super_find_     31193761    0
+bitcoin_server_miner4 <0.534.0>    bitcoinServer:super_find_     27014332    0
+bitcoin_server_miner4 <0.498.0>    bitcoinServer:super_find_     26730254    0
+bitcoin_server_miner4 <0.497.0>    bitcoinServer:super_find_     33033383    0
+bitcoin_server_miner4 <0.496.0>    bitcoinServer:super_find_     26838757    0
+bitcoin_server_miner4 <0.495.0>    bitcoinServer:super_find_     69825896    0
+bitcoin_server_miner4 <0.494.0>    bitcoinServer:super_find_     32039104    0
+bitcoin_server_miner4 <0.493.0>    bitcoinServer:super_find_     59435155    0
+bitcoin_server_miner4 <0.492.0>    bitcoinServer:super_find_     33461198    0
+bitcoin_server_miner4 <0.491.0>    bitcoinServer:super_find_     55143602    0
+bitcoin_server_miner4 <0.490.0>    bitcoinServer:super_find_     51858370    0
+bitcoin_server_miner4 <0.489.0>    bitcoinServer:super_find_     51168672    0
+bitcoin_server_miner5 <0.533.0>    bitcoinServer:super_find_     26770958    0
+bitcoin_server_miner5 <0.488.0>    bitcoinServer:super_find_     39236227    0
+bitcoin_server_miner6 <0.532.0>    bitcoinServer:super_find_     27065455    0
+bitcoin_server_miner7 <0.531.0>    bitcoinServer:super_find_     26859397    0
+bitcoin_server_miner8 <0.530.0>    bitcoinServer:super_find_     27054257    0
+bitcoin_server_miner9 <0.529.0>    bitcoinServer:super_find_     39258311    0
+bitcoin_server_tcp_1  <0.487.0>    bitcoinServer:server/2              28    0
+bitcoin_server_tcp_2  <0.486.0>    bitcoinServer:server/2              64    0
+code_server           <0.50.0>     erlang:apply/2                  159234    0
+erl_prim_loader       <0.10.0>     erlang:apply/2                  285937    0
+erl_signal_server     <0.59.0>     gen_event:init_it/6                145    0
+erts_code_purger      <0.1.0>      erts_code_purger:start/0        153884    0
+file_server_2         <0.58.0>     file_server:init/1                5161    0
+global_group          <0.57.0>     global_group:init/1                192    0
+global_name_server    <0.54.0>     global:init/1                      281    0
+inet_db               <0.51.0>     inet_db:init/1                     569    0
+init                  <0.0.0>      erl_init:start/2                  6115    0
+kernel_refc           <0.67.0>     kernel_refc:init/1                 166    0
+kernel_safe_sup       <0.68.0>     supervisor:kernel/1                191    0
+kernel_sup            <0.49.0>     supervisor:kernel/1               2965    0
+logger                <0.42.0>     logger_server:init/1               737    0
+logger_handler_watche <0.70.0>     logger_handler_watcher:in          150    0
+logger_proxy          <0.71.0>     logger_olp:init/1                  184    0
+logger_std_h_default  <0.73.0>     logger_olp:init/1                  256    0
+logger_sup            <0.69.0>     supervisor:logger_sup/1            508    0
+rex                   <0.52.0>     rpc:init/1                         133    0
+socket_registry       <0.7.0>      socket_registry:start/0            106    0
+standard_error        <0.61.0>     erlang:apply/2                     112    0
+SERVER:<0.512.0> tomas.delclauxro;A0ldh77OTLbTPjRfFQapGia5B0qVk54w      00001e7bcecf90076146ef63be55ebc2036957b8ccae7e9e69034e0e41c8045c
+standard_error_sup    <0.60.0>     supervisor_bridge:standar          149    0
+user                  <0.64.0>     group:server/3                     198    0
+user_drv              <0.63.0>     user_drv:server/2               685540    0
+```
+This was done with the following configuration on the bitcoinServer file:
+```
+-define(NUM_THREADS_SERVERS, 2).
+-define(NUM_SERVER_WORKERS, 50).
+```
