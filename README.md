@@ -137,7 +137,12 @@ tomas.delclauxro;GvSJdEEvPl37E5Rwiv8bHrF0nI/r/EJj      000000063a9e9a68100adc998
 
 The largest number of independent machines we were able to run the code with was two separate machines. The reason for this is due to the technical limitation of having many physical machines to run the code with.
 
-We were, however, able to run the code with 4 connected clients, and the server running on the host.
+We were, however, able to run the code with 4 connected clients, and the server running on the host. In order to this, more actors had to spawn to take care of the tcp connections. So the following was set on the bitcoinServer file:
+```
+-define(NUM_THREADS_SERVERS, 4).
+-define(NUM_SERVER_WORKERS, 4).
+```
+4 tcp threads to handle clients and 4 actors to mine on the server.
 
 Without any clients connecting to the server, the maximum number of feasible actors to use to run bitcoin mining processes on the same machine as the 
 server was determined by the number of physical cores of the system. Both our systems had 8 high performance cores and 2 efficiency cores. Consequently, the maximum number of processes running in parallel could at max be 10. However, due to the erlang scheduler and the erlang vm, the code can run with much more actors. In fact, we tested running the code with up to 50 bitcoin mine workers on the server machine.
