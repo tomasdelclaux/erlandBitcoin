@@ -11,7 +11,7 @@ Distributed system for mining bitcoins in erlang.
 ## EXAMPLE 1
 If running the program file on a single, make sure that the DOS flag is set to false.
 ```
--define(DOS, true).
+-define(DOS, false).
 ```
 In order to run example 1. Compile the file bitcoinWorker and run the function example1().
 ```
