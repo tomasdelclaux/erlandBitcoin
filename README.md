@@ -121,7 +121,7 @@ Ratio=3.917708435869672
 ``` 
 CPU to Realtime Ratio ~= 3.9
 
-This ratio was achived with the following actor configuration:
+This ratio was achived with the following actor configuration and entering 5 as the input for number of leading zeroes on the bitcoinServer:
 ```
 -define(NUM_THREADS_SERVERS, 1).
 -define(NUM_SERVER_WORKERS, 4).
