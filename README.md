@@ -58,6 +58,10 @@ Client side (with an imput for the IP of the server):
 (node@hostname2.com)2> bitcoinWorker:example2().
 192.168.64.1
 ```
+Additionally, the bitcoinWorker or client can also be run with the following command and specifiying the ip address:
+```
+bitcoinWorker:client("127.0.0.1")
+```
 
 Server Side (with an input for a number of zeros):
 ```
