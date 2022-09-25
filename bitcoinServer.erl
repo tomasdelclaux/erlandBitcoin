@@ -3,7 +3,7 @@
 -compile(export_all).
 -define(TCP_PORT, 4500).
 -define(NUM_THREADS_SERVERS, 2).
--define(NUM_SERVER_WORKERS, 8).
+-define(NUM_SERVER_WORKERS, 4).
 -define(GATOR, "tomas.delclauxro;").
 -define(COOKIE, froggy).
 -define(DOS, false).
@@ -91,4 +91,5 @@ stop()->
     Elapsed = Time2 * 1000,
     io:format("Cpu time=~p microseconds~n", [CPU]),
     io:format("Elapsed time=~p microseconds~n", [Elapsed]),
+    io:format("Ratio=~p~n", [CPU/Elapsed]),
     exit(self(),kill).
