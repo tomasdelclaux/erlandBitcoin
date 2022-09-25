@@ -8,6 +8,7 @@ Ariel Weitzenfeld and Tomas Delclaux
 ## INTRODUCTION
 Distributed system for mining bitcoins in erlang.
 
+
 ## EXAMPLE 1
 If running the program file on a single, make sure that the DOS flag is set to false.
 ```
