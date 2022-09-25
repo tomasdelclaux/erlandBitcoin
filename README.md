@@ -115,12 +115,17 @@ WORKER:<0.79.0> tomas.delclauxro;9MfgBFqgl+H0xpqcxKuwecteDrikB/zf       00002cc0
 
 CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM -
 ```
-(node@hostname1.com)3> bitcoinServer:stop().
-Cpu time=747802000 microseconds
-Elapsed time=236173000 microseconds
-** exception exit: killed
+Cpu time=79600000 microseconds
+Elapsed time=20318000 microseconds
+Ratio=3.917708435869672
 ``` 
-CPU to Realtime Ratio ~= 3.16633146041
+CPU to Realtime Ratio ~= 3.9
+
+This ratio was achived with the following actor configuration:
+```
+-define(NUM_THREADS_SERVERS, 1).
+-define(NUM_SERVER_WORKERS, 4).
+```
 
 ### LARGEST COIN FOUND - 
 7 Zeros
