@@ -89,7 +89,7 @@ To stop the server run:
 
 ## ACTOR MODEL
 
-SIZE OF WORK UNIT -
+SIZE OF WORK UNIT 
 
 The optimal number of workers we decided is around 8. This is because our machine has 10 cores, but two of those are energy efficient cores.
 
@@ -99,7 +99,7 @@ Additionally, the hashing operation is atomic and cannot be divided among multip
 
 Hence, we decided to have workers mine coins with a specific numbers as determined by the input to the server. Also, some actors were used on the server side to be able to accommodate more than one tcp client at a time. Since, the tcp connection is only needed to get the information from the server on how many leading zeroes a coin must have, and to then report back the results, these number of tcp processes were limited to 2. The reason for this, is that we set the number of leading zeroes to be above 5, which reduces the rate at which coins are found, and hence there is more need to have more processes mining than servers processing tcp client connections simultaneously.
 
-RESULT OF RUNNING FOR INPUT 4 -
+RESULT OF RUNNING FOR INPUT 4 
 ```
 4
 4500
@@ -113,7 +113,7 @@ SERVER:<0.98.0> tomas.delclauxro;gnHPcRbqyV/7QXnErr3hFHHxzoqjC0iz       00003b50
 WORKER:<0.79.0> tomas.delclauxro;9MfgBFqgl+H0xpqcxKuwecteDrikB/zf       00002cc066f3cbebd2fc925bbc5d5726704769cc83e6e1689703f5efa1382054
 ```
 
-CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM -
+CPU TIME VS ELAPSED TIME 
 ```
 Cpu time=79600000 microseconds
 Elapsed time=20318000 microseconds
@@ -127,7 +127,7 @@ This ratio was achived with the following actor configuration and entering 5 as 
 -define(NUM_SERVER_WORKERS, 4).
 ```
 
-### LARGEST COIN FOUND - 
+### LARGEST COIN FOUND 
 7 Zeros
 ```
 tomas.delclauxro;GvSJdEEvPl37E5Rwiv8bHrF0nI/r/EJj      000000063a9e9a68100adc9980abf79f2dd331a2ea2de855f9b28cd0c6989234
