@@ -1,5 +1,6 @@
 # erlangBitcoin
-Hashing in erlang for bitcoins
+Erlang simulation of mining bitcoins in a distributed system.
+The project consists of a parallel processes mining server that can also accept clients to participate in the mining process.
 
 # AUTHORS
 Ariel Weitzenfeld and Tomas Delclaux
@@ -7,10 +8,11 @@ Ariel Weitzenfeld and Tomas Delclaux
 ## INTRODUCTION
 Distributed system for mining bitcoins in erlang.
 
+
 ## EXAMPLE 1
 If running the program file on a single, make sure that the DOS flag is set to false.
 ```
--define(DOS, true).
+-define(DOS, false).
 ```
 In order to run example 1. Compile the file bitcoinWorker and run the function example1().
 ```
@@ -56,6 +58,10 @@ Client side (with an imput for the IP of the server):
 (node@hostname2.com)2> bitcoinWorker:example2().
 192.168.64.1
 ```
+Additionally, the bitcoinWorker or client can also be run with the following command and specifiying the ip address:
+```
+bitcoinWorker:client("127.0.0.1")
+```
 
 Server Side (with an input for a number of zeros):
 ```
@@ -85,9 +91,13 @@ To stop the server run:
 
 SIZE OF WORK UNIT -
 
-The optimal number of workers we decided is around ________. This is because ____________.
+The optimal number of workers we decided is around 8. This is because our machine has 10 cores, but two of those are energy efficient cores.
 
 Each worker gets the same size of work unit as each worker operates on a first come first serve basis. It requests work, looks for a coin, reports after finding one, and requests work again. The number of times a worker is able to run a problem is dependent on the scheduler and the randomness of successful operations.
+
+Additionally, the hashing operation is atomic and cannot be divided among multiple actors for faster results. Instead, the idea is to maximise the number of actors or workers to increase the probability of finding a coin faster.
+
+Hence, we decided to have workers mine coins with a specific numbers as determined by the input to the server. Also, some actors were used on the server side to be able to accommodate more than one tcp client at a time. Since, the tcp connection is only needed to get the information from the server on how many leading zeroes a coin must have, and to then report back the results, these number of tcp processes were limited to 2. The reason for this, is that we set the number of leading zeroes to be above 5, which reduces the rate at which coins are found, and hence there is more need to have more processes mining than servers processing tcp client connections simultaneously.
 
 RESULT OF RUNNING FOR INPUT 4 -
 ```
@@ -105,12 +115,17 @@ WORKER:<0.79.0> tomas.delclauxro;9MfgBFqgl+H0xpqcxKuwecteDrikB/zf       00002cc0
 
 CPU TIME VS ELAPSED TIME - HOW MUCH PARALLELISM -
 ```
-(node@hostname1.com)3> bitcoinServer:stop().
-Cpu time=747802000 microseconds
-Elapsed time=236173000 microseconds
-** exception exit: killed
+Cpu time=79600000 microseconds
+Elapsed time=20318000 microseconds
+Ratio=3.917708435869672
 ``` 
-CPU to Realtime Ratio ~= 3.16633146041
+CPU to Realtime Ratio ~= 3.9
+
+This ratio was achived with the following actor configuration and entering 5 as the input for number of leading zeroes on the bitcoinServer:
+```
+-define(NUM_THREADS_SERVERS, 1).
+-define(NUM_SERVER_WORKERS, 4).
+```
 
 ### LARGEST COIN FOUND - 
 7 Zeros
@@ -119,3 +134,10 @@ tomas.delclauxro;GvSJdEEvPl37E5Rwiv8bHrF0nI/r/EJj      000000063a9e9a68100adc998
 ```
 
 ### LARGEST NUMBER OF WORKING MACHINES
+
+The largest number of independent machines we were able to run the code with was two separate machines. The reason for this is due to the technical limitation of having many physical machines to run the code with.
+
+We were, however, able to run the code with 4 connected clients, and the server running on the host.
+
+Without any clients connecting to the server, the maximum number of feasible actors to use to run bitcoin mining processes on the same machine as the 
+server was determined by the number of physical cores of the system. Both our systems had 8 high performance cores and 2 efficiency cores. Consequently, the maximum number of processes running in parallel could at max be 10. However, due to the erlang scheduler and the erlang vm, the code can run with much more actors. In fact, we tested running the code with up to 50 bitcoin mine workers on the server machine.
