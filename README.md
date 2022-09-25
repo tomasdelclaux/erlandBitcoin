@@ -1,5 +1,6 @@
 # erlangBitcoin
-Hashing in erlang for bitcoins
+Erlang simulation of mining bitcoins in a distributed system.
+The project consists of a parallel processes mining server that can also accept clients to participate in the mining process.
 
 # AUTHORS
 Ariel Weitzenfeld and Tomas Delclaux
