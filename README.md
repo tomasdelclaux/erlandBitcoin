@@ -7,7 +7,7 @@ Ariel Weitzenfeld and Tomas Delclaux
 
 ## INTRODUCTION
 Distributed system for mining bitcoins in erlang.
-
+The file bitcoinServer.el contains the code for the server and bitcoinWorker.erl contains the file for the client.
 
 ## EXAMPLE 1
 If running the program file on a single, make sure that the DOS flag is set to false.
