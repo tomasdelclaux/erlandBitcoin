@@ -90,6 +90,10 @@ The optimal number of workers we decided is around 8. This is because our machin
 
 Each worker gets the same size of work unit as each worker operates on a first come first serve basis. It requests work, looks for a coin, reports after finding one, and requests work again. The number of times a worker is able to run a problem is dependent on the scheduler and the randomness of successful operations.
 
+Additionally, the hashing operation is atomic and cannot be divided among multiple actors for faster results. Instead, the idea is to maximise the number of actors or workers to increase the probability of finding a coin faster.
+
+Hence, we decided to have workers mine coins with a specific numbers as determined by the input to the server. Also, some actors were used on the server side to be able to accommodate more than one tcp client at a time. Since, the tcp connection is only needed to get the information from the server on how many leading zeroes a coin must have, and to then report back the results, these number of tcp processes were limited to 2. The reason for this, is that we set the number of leading zeroes to be above 5, which reduces the rate at which coins are found, and hence there is more need to have more processes mining than servers processing tcp client connections simultaneously.
+
 RESULT OF RUNNING FOR INPUT 4 -
 ```
 4
