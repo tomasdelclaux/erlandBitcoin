@@ -86,7 +86,7 @@ To stop the server run:
 
 SIZE OF WORK UNIT -
 
-The optimal number of workers we decided is around ________. This is because ____________.
+The optimal number of workers we decided is around 8. This is because our machine has 10 cores, but two of those are energy efficient cores.
 
 Each worker gets the same size of work unit as each worker operates on a first come first serve basis. It requests work, looks for a coin, reports after finding one, and requests work again. The number of times a worker is able to run a problem is dependent on the scheduler and the randomness of successful operations.
 
@@ -120,3 +120,10 @@ tomas.delclauxro;GvSJdEEvPl37E5Rwiv8bHrF0nI/r/EJj      000000063a9e9a68100adc998
 ```
 
 ### LARGEST NUMBER OF WORKING MACHINES
+
+The largest number of independent machines we were able to run the code with was two separate machines. The reason for this is due to the technical limitation of having many physical machines to run the code with.
+
+We were, however, able to run the code with 4 connected clients (these were client connections from a virtual machine), and the server running on the host.
+
+Without any clients connecting to the server, the maximum number of feasible actors to use to run bitcoin mining processes on the same machine as the 
+server was determined by the number of physical cores of the system. Both our systems had 8 high performance cores and 2 efficiency cores. Consequently, the maximum number of processes running in parallel could at max be 10. However, due to the erlang scheduler and the erlang vm, the code can run with much more actors. In fact, we tested running the code with up to 50 bitcoin mine workers on the server machine.
